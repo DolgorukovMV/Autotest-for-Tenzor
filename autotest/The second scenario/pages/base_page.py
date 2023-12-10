@@ -6,15 +6,15 @@ import logging
 # Настройка логгера
 logger = logging.getLogger(__name__)
 
-
+# Класс BasePage
 class BasePage:
     def __init__(self, driver):
         self.driver = driver
         self.base_url = "https://sbis.ru/"
-
+# Метод для открытия указанного URL
     def open_url(self, url):
         self.driver.get(url)
-
+# Метод для ожидания полной загрузки страницы
     def wait_for_page_load(self, timeout=5):
         """
         Ждет, пока страница полностью загрузится.
@@ -23,7 +23,7 @@ class BasePage:
         WebDriverWait(self.driver, timeout).until(
             lambda d: d.current_url != current_url and self.is_jquery_inactive(d)
         )
-
+# Метод для проверки, неактивен ли jQuery на странице
     def is_jquery_inactive(self, driver):
         """
         Проверяет, неактивен ли jQuery на странице.
@@ -33,10 +33,10 @@ class BasePage:
         except Exception as ex:
             logger.error(f"Exception in is_jquery_inactive: {ex}")
             return True  # Обработка исключений, если что-то пошло не так
-
+# Метод для поиска элемента по стратегии и значению
     def find_element(self, by, value):
         return self.driver.find_element(by, value)
-
+# Метод для ожидания появления элемента
     def wait_for_element(self, by, value, timeout=30):
         try:
             return WebDriverWait(self.driver, timeout).until(
