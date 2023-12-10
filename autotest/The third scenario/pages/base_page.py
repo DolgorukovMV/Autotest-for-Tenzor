@@ -15,10 +15,10 @@ class BasePage:
     def __init__(self, driver):
         self.driver = driver
         self.base_url = "https://sbis.ru"
-
+# Метод для открытия указанного URL
     def open_url(self, url):
         self.driver.get(url)
-
+# Метод для ожидания полной загрузки страницы
     def wait_for_page_load(self, timeout=5):
         """Ждет, пока страница полностью загрузится"""
         logger.info(f"Waiting for page load. Current URL: {self.driver.current_url}")
@@ -29,7 +29,7 @@ class BasePage:
         )
 
         logger.info(f"Page loaded successfully. New URL: {self.driver.current_url}")
-
+# Метод для проверки, неактивен ли jQuery на странице
     def is_jquery_inactive(self, driver):
         logger.info("Checking if jQuery is inactive...")
 
@@ -42,10 +42,10 @@ class BasePage:
             # Обработка исключения (если необходимо)
             logger.error(f"An error occurred while checking jQuery activity: {str(e)}")
             return False
-
+# Метод для поиска элемента по стратегии и значению
     def find_element(self, by, value):
         return self.driver.find_element(by, value)
-
+# Метод для ожидания, пока элемент станет кликабельным
     def wait_for_element_to_be_clickable(self, by, value, timeout=30):
         try:
             self.wait_for_page_load()  # Ждем полной загрузки страницы
@@ -55,10 +55,10 @@ class BasePage:
         except Exception as ex:
             logger.error(f"Exception in wait_for_element_to_be_clickable: {ex}")
             raise  # Повторно поднимаем исключение
-
+# Метод для выполнения клика с использованием JavaScript
     def execute_js_click(self, element):
         self.driver.execute_script("arguments[0].click();", element)
-
+# Метод для ожидания появления элемента
     def wait_for_element(self, by, value, timeout=10):
         try:
             logger.info(f"Waiting for element by {by} with value {value}")
@@ -68,7 +68,7 @@ class BasePage:
         except Exception as ex:
             logger.error(f"Element not found by {by} with value {value} within {timeout} seconds. Error: {ex}")
             raise
-
+# Метод для ожидания загрузки файла
     def wait_for_file_to_download(self, file_path, timeout=60):
         start_time = time.time()
 
