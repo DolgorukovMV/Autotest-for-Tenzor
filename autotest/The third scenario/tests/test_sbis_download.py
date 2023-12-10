@@ -31,7 +31,7 @@ logger.addHandler(console_handler)
 print(f"Logger configured. Log file: {'C:/test_log.txt'}")
 logger.info("Test started")
 
-
+# Фикстура для инициализации WebDriver
 @pytest.fixture
 def browser():
 
@@ -40,29 +40,29 @@ def browser():
     yield driver
     driver.quit()
 
-
+# Основной тестовый сценарий
 def test(browser):
     try:
+        # Инициализация базовой страницы
         base_page = BasePage(browser)
         base_page.open_url("https://sbis.ru/")
-        # Максимизация окна браузера
-        # browser.maximize_window()
-        # Прокрутка страницы вниз
-        #  browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
 
+        # Нахождение элементов с помощью CSS-селектора
         elements = browser.find_elements(By.CSS_SELECTOR, '[href="/download?tab=ereport&innerTab=ereport25"]')
         element = elements[0] if elements else None
-
+        # Если элемент найден, кликнуть на него с использованием JavaScript
         if element:
             logger.info("Clicking on the element using JavaScript...")
             browser.execute_script("arguments[0].click();", element)
-
+        # Инициализация страницы SbisPage
         sbis_page = SbisPage(browser)
         sbis_page.click_sbis_plugin_tab()
-
-       # assert "https://sbis.ru/download?tab=plugin&innerTab=default" in browser.current_url
+        # Проверка текущего URL после клика
+        assert "https://sbis.ru/download?tab=plugin&innerTab=default" in browser.current_url
     except Exception as e:
+        # Логирование ошибки и повторное поднятие исключения
         logger.exception(f"An error occurred: {e}")
         raise
     finally:
+        # Логирование завершения теста
         logger.info("Test completed.")
